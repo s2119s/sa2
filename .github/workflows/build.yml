@@ -4,6 +4,10 @@ on:
         branches-ignore:
             - main
 
+defaults:
+  run:
+    working-directory: ./front
+
 jobs:
   build:
 
