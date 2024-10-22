@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:14
+    container_name: postgres_pta
+    volumes:
+      - db-store:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    environment:
+      POSTGRES_USER: 'sa2'
+      POSTGRES_PASSWORD: '12345'
+      POSTGRES_DB: 'sa2'
+    networks:
+      - internal_network
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    tty: true
+    depends_on:
+      - db
+    volumes:
+      - ./front:/app
+    #command: sh -c "yarn run build && yarn start"
+    command: sh -c "yarn run dev"
+    ports:
+      - "3000:3000"
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
+    driver: bridge
+volumes:
+  db-store:
