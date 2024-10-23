@@ -4,10 +4,6 @@ on:
         branches-ignore:
             - main
 
-defaults:
-  run:
-    working-directory: front
-
 jobs:
   build:
 
@@ -24,7 +20,8 @@ jobs:
                 cache: npm
 
         -   name: npm-install
+            working-directory: ./front
             run: npm i
-            
-        -   run: npm run build
-
+        -   name: npm-build
+            working-directory: ./front
+            run: npm run build
