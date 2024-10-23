@@ -18,10 +18,12 @@ jobs:
             with:
                 node-version: '22.3.0'
                 cache: npm
+                cache-dependency-path: "front"
 
         -   name: npm-install
             working-directory: ./front
             run: npm i
+
         -   name: npm-build
             working-directory: ./front
             run: npm run build
