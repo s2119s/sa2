@@ -124,3 +124,98 @@ export async function getDeadlineNear() {
     console.log("An error occurced: " + error);
   }
 }
+
+export async function getAvailable() {
+  try {
+    const client = await pool.connect();
+    try {
+      // count available pcs.
+      const query = `
+        SELECT *
+        FROM PCs
+        WHERE owned_by IS NULL;
+      `;
+
+      const result = await client.query(query);
+      if (result.rows.length === 0) {
+        // any available pc found.
+        console.log("0 length of rows.")
+      }
+
+      return result.rows
+    }
+    catch (error) {
+      console.log(error)
+      console.log("can't access db table. make sure access and check table is avalable.")
+    }
+    finally {
+      client.release();
+    }
+  }
+  catch (error) {
+    console.log("An error occurced: " + error);
+  }
+}
+
+export async function getList() {
+  try {
+    const client = await pool.connect();
+    try {
+      // count available pcs.
+      const query = `
+        SELECT *
+        FROM PCs;
+      `;
+
+      const result = await client.query(query);
+      if (result.rows.length === 0) {
+        // any pc found.
+        console.log("0 length of rows.")
+      }
+
+      return result.rows
+    }
+    catch (error) {
+      console.log(error)
+      console.log("can't access db table. make sure access and check table is avalable.")
+    }
+    finally {
+      client.release();
+    }
+  }
+  catch (error) {
+    console.log("An error occurced: " + error);
+  }
+}
+
+export async function getNumber() {
+  try {
+    const client = await pool.connect();
+    try {
+      // count available pcs.
+      const query = `
+        SELECT COALESCE(COUNT(*), 0)
+        FROM PCs
+        WHERE owned_by IS NULL;
+      `;
+
+      const result = await client.query(query);
+      if (result.rows.length === 0) {
+        // any available pc found.
+        console.log("0 length of rows.")
+      }
+
+      return result.rows[0].coalesce as Number;
+    }
+    catch (error) {
+      console.log(error)
+      console.log("can't access db table. make sure access and check table is avalable.")
+    }
+    finally {
+      client.release();
+    }
+  }
+  catch (error) {
+    console.log("An error occurced: " + error);
+  }
+}
