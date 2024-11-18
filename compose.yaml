@@ -20,8 +20,8 @@ services:
       - db
     volumes:
       - ./front:/app
-    #command: sh -c "yarn run build && yarn start"
-    command: sh -c "yarn run dev"
+    command: sh -c "yarn run build && yarn start"
+    #command: sh -c "yarn run dev"
     ports:
       - "3000:3000"
     networks:
