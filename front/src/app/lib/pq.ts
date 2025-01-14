@@ -202,7 +202,36 @@ export async function getDeadlineNear() {
     }
 
     const query = `
-      SELECT *
+         SELECT * FROM PCs 
+WHERE id IN (SELECT pc_id
+FROM reservations
+WHERE reserved_by = CAST($1 AS UUID)
+  AND end_timestamp >= NOW() AT TIME ZONE 'ASIA/TOKYO'
+  AND end_timestamp - interval '1 hour' <= NOW() AT TIME ZONE 'ASIA/TOKYO');
+
+      `;
+    const result = await execQuery(query, data.user.id)
+    if (result.rowCount === 0) {
+    }
+
+    return result
+  }
+  catch (error) {
+    console.log("[getDeadlineNear] " + error);
+  }
+}
+
+export async function getDeadlineNear2() {
+  try {
+    const supabase = await createClient()
+    const { data, error } = await supabase.auth.getUser()
+    if (error || !data?.user) {
+      redirect('/login')
+    }
+
+    const query = `
+      
+     SELECT *
 FROM reservations
 WHERE reserved_by = CAST($1 AS UUID)
   AND end_timestamp >= NOW() AT TIME ZONE 'ASIA/TOKYO'
